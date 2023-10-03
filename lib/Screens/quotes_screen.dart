@@ -1,3 +1,4 @@
+import 'package:all_quotes/Model/QuotesModel.dart';
 import 'package:flutter/material.dart';
 
 class QuotesScreen extends StatefulWidget {
@@ -20,7 +21,8 @@ class _QuotesScreenState extends State<QuotesScreen> {
           style: TextStyle(color: Colors.black),
         ),
       ),
-      body: ListView.builder(itemCount: 10,itemBuilder: (context, index) => quotesTile()),
+      body: ListView.builder(
+          itemCount: 10, itemBuilder: (context, index) => quotesTile()),
     ));
   }
 

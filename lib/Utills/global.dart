@@ -25,5 +25,32 @@ class Global {
     CategoryModel(name: "Smile",image: "assets/img/smile.png",color: Colors.amber),
   ];
 
+  List<Map> quotesList = [
+    {
+      "quotes":
+      "” It is better to fail in originality than to succeed in imitation. ”",
+      "author": "Herman Melville","category":"Motivation"
+    },
+    {
+      "quotes":
+      "” The road to success and the road to failure are almost exactly the same. ”",
+      "author": "Colin R. Davis","category":"Single"
+    },
+    {
+      "quotes":
+      "” Success usually comes to those who are too busy looking for it. ”",
+      "author": "Henry David Thoreau","category":"Lonely"
+    },
+    {
+      "quotes":
+      "” Develop success from failures. Discouragement and failure are two of the surest stepping stones to success. ”",
+      "author": "Dale Carnegie","category":"Attitude"
+    },
+    {
+      "quotes": "” I never dreamed about success. I worked for it. ”",
+      "author": "Estée Lauder","category":"Happiness"
+    },
+  ];
+
   List<QuotesModel> modelList = [];
 }
