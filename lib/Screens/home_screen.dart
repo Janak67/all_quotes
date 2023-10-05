@@ -40,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     isGrid = !isGrid;
                   });
                 },
-                icon: Icon(isGrid ? Icons.list : Icons.grid_view))
+                icon: Icon(isGrid ? Icons.list : Icons.grid_view,color: Colors.white,))
           ],
         ),
         body: isGrid
