@@ -90,6 +90,15 @@ flutter:
   #       - asset: fonts/TrajanPro.ttf
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
+
+  fonts:
+    - family: Josefin
+      fonts:
+        - asset: assets/fonts/Josefin.ttf
+
+    - family: Young
+      fonts:
+        - asset: assets/fonts/Young.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
