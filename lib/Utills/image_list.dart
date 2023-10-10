@@ -8,6 +8,13 @@ List imageList=[
 ];
 
 List<String>fontList=[
-  'Josefin',
   'Young',
+  'Sacramento',
+  'GreatVibes',
+  'Poppins',
+  'Roboto',
+  'YoungSerif',
+  'YujiHentai',
+  'Zeyada',
+  'Josefin',
 ];

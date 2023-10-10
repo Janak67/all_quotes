@@ -1,9 +1,13 @@
 import 'package:all_quotes/Model/quotes_model.dart';
 import 'package:all_quotes/Utills/app_color.dart';
 import 'package:all_quotes/Utills/image_list.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'dart:ui' as ui;
+import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:share_extend/share_extend.dart';
 
 class QuotesEditScreen extends StatefulWidget {
   const QuotesEditScreen({Key? key}) : super(key: key);
@@ -19,6 +23,7 @@ class _QuotesEditScreenState extends State<QuotesEditScreen> {
   TextAlign txtAlign = TextAlign.center;
   bool isimageindex = true;
   int fontStyle = 0;
+  GlobalKey globalKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -31,68 +36,69 @@ class _QuotesEditScreenState extends State<QuotesEditScreen> {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
-              Stack(
-                alignment: Alignment.center,
-                children: [
-                  InkWell(
-                    onTap: () {
-                      setState(() {
-                        if (colorbgindex < colorbg.length - 1) {
-                          colorbgindex++;
-                        } else {
-                          colorbgindex = 0;
-                        }
-                      });
-                    },
-                    child: Container(
-                      height: MediaQuery.of(context).size.height * 0.65,
+              RepaintBoundary(
+                key: globalKey,
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Container(
+                      height: MediaQuery.of(context).size.height * 0.63,
                       width: MediaQuery.of(context).size.width,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(15),
                         color: colorbg[colorbgindex],
                       ),
                     ),
-                  ),
-                  Visibility(
-                    visible: isimageindex,
-                    child: InkWell(
-                      onTap: () {
-                        setState(() {
-                          isimageindex = false;
-                        });
-                      },
-                      child: Image.asset(
-                        "assets/img/bg/${imageList[image]}",
-                        fit: BoxFit.cover,
-                        width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.height * 0.69,
+                    Visibility(
+                      visible: isimageindex,
+                      child: InkWell(
+                        onTap: () {
+                          setState(() {
+                            isimageindex = false;
+                          });
+                        },
+                        child: Image.asset(
+                          "assets/img/bg/${imageList[image]}",
+                          fit: BoxFit.cover,
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.height * 0.63,
+                        ),
                       ),
                     ),
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "${model.quotes}",
-                        textAlign: txtAlign,
-                        style: TextStyle(
-                            fontFamily: fontList[fontStyle],
-                            color: colorbg[fontcolor],
-                            fontSize: 30,
-                            fontWeight:
-                                bold ? FontWeight.bold : FontWeight.normal,
-                            fontStyle:
-                                italic ? FontStyle.italic : FontStyle.normal),
-                      ),
-                    ],
-                  ),
-                ],
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SelectableText(
+                          "${model.quotes}",
+                          textAlign: txtAlign,
+                          style: TextStyle(
+                              fontFamily: fontList[fontStyle],
+                              color: colorbg[fontcolor],
+                              fontSize: 30,
+                              fontWeight:
+                                  bold ? FontWeight.bold : FontWeight.normal,
+                              fontStyle:
+                                  italic ? FontStyle.italic : FontStyle.normal),
+                        ),
+                        // SelectableText(
+                        //   "Hello",
+                        //   style: TextStyle(color: Colors.white, fontSize: 25),
+                        //   textAlign: TextAlign.center,
+                        //   onTap: () => print('Tapped'),
+                        //   contextMenuBuilder: (context, editableTextState) {
+                        //     ContextMenuPreviewBuilder(copy:true,selectAll:true);
+                        //   },
+                        // )
+                      ],
+                    ),
+                  ],
+                ),
               ),
               const Spacer(),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Container(
-                  height: MediaQuery.of(context).size.height * 0.27,
+                  height: MediaQuery.of(context).size.height * 0.29,
                   width: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
                       color: Colors.grey.shade400,
@@ -104,6 +110,14 @@ class _QuotesEditScreenState extends State<QuotesEditScreen> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
+                            IconButton(
+                                onPressed: () async {
+                                 await saveImage();
+                                },
+                                icon: const Icon(
+                                  Icons.download,
+                                  color: Colors.black,
+                                )),
                             IconButton(
                                 onPressed: () {
                                   setState(() {
@@ -140,6 +154,20 @@ class _QuotesEditScreenState extends State<QuotesEditScreen> {
                                   }
                                 });
                               },
+                              icon: const Icon(Icons.text_rotation_none,
+                                  color: Colors.black),
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  if (colorbgindex < colorbg.length - 1) {
+                                    colorbgindex++;
+                                  } else {
+                                    colorbgindex = 0;
+                                  }
+                                  isimageindex = false;
+                                });
+                              },
                               icon: const Icon(Icons.color_lens,
                                   color: Colors.black),
                             ),
@@ -171,6 +199,15 @@ class _QuotesEditScreenState extends State<QuotesEditScreen> {
                                   color: Colors.black),
                             ),
                             IconButton(
+                                onPressed: () async{
+                                  dynamic path = await saveImage();
+                                  await ShareExtend.share(path['filePath'], "image");
+                                },
+                                icon: const Icon(
+                                  Icons.share,
+                                  color: Colors.black,
+                                )),
+                            IconButton(
                               onPressed: () {
                                 setState(() {
                                   colorbgindex = 0;
@@ -180,7 +217,7 @@ class _QuotesEditScreenState extends State<QuotesEditScreen> {
                                   italic = false;
                                   txtAlign = TextAlign.center;
                                   isimageindex = true;
-                                  fontStyle=0;
+                                  fontStyle = 0;
                                 });
                               },
                               icon: const Icon(Icons.restart_alt,
@@ -216,7 +253,7 @@ class _QuotesEditScreenState extends State<QuotesEditScreen> {
                         ),
                       ),
                       SizedBox(
-                        height: 60,
+                        height: 50,
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
                           itemCount: fontList.length,
@@ -228,11 +265,12 @@ class _QuotesEditScreenState extends State<QuotesEditScreen> {
                                 });
                               },
                               child: Padding(
-                                padding: const EdgeInsets.all(8.0),
+                                padding: const EdgeInsets.all(10),
                                 child: Text(
-                                  "Hello",
+                                  "Hello  ",
                                   style: TextStyle(
-                                      fontSize: 25, fontFamily: fontList[index]),
+                                      fontSize: 20,
+                                      fontFamily: fontList[index]),
                                 ),
                               ),
                             );
@@ -248,5 +286,14 @@ class _QuotesEditScreenState extends State<QuotesEditScreen> {
         ),
       )),
     );
+  }
+
+  Future<dynamic> saveImage() async {
+    RenderRepaintBoundary boundary =
+        globalKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
+    ui.Image image = await boundary.toImage();
+    ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+
+    return await ImageGallerySaver.saveImage(byteData!.buffer.asUint8List());
   }
 }

@@ -37,6 +37,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   google_fonts: ^6.1.0
   like_button: ^2.0.5
+  image_gallery_saver: ^2.0.3
+  share_extend: ^2.0.0
 
 dev_dependencies:
   flutter_test:
@@ -99,6 +101,34 @@ flutter:
     - family: Young
       fonts:
         - asset: assets/fonts/Young.ttf
+
+    - family: GreatVibes
+      fonts:
+        - asset: assets/fonts/GreatVibes.ttf
+
+    - family: Poppins
+      fonts:
+        - asset: assets/fonts/Poppins.ttf
+
+    - family: Roboto
+      fonts:
+        - asset: assets/fonts/Roboto.ttf
+
+    - family: YoungSerif
+      fonts:
+        - asset: assets/fonts/YoungSerif.ttf
+
+    - family: YujiHentai
+      fonts:
+        - asset: assets/fonts/YujiHentai.ttf
+
+    - family: Zeyada
+      fonts:
+        - asset: assets/fonts/Zeyada.ttf
+
+    - family: Sacramento
+      fonts:
+        - asset: assets/fonts/Sacramento.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
