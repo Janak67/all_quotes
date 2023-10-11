@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:all_quotes/Model/quotes_model.dart';
 import 'package:all_quotes/Utills/app_color.dart';
 import 'package:all_quotes/Utills/image_list.dart';
@@ -6,8 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'dart:ui' as ui;
-import 'package:image_gallery_saver/image_gallery_saver.dart';
-import 'package:share_extend/share_extend.dart';
+import 'package:share_plus/share_plus.dart';
 
 class QuotesEditScreen extends StatefulWidget {
   const QuotesEditScreen({Key? key}) : super(key: key);
@@ -112,7 +113,7 @@ class _QuotesEditScreenState extends State<QuotesEditScreen> {
                           children: [
                             IconButton(
                                 onPressed: () async {
-                                 await saveImage();
+                                  await saveImage();
                                 },
                                 icon: const Icon(
                                   Icons.download,
@@ -199,9 +200,10 @@ class _QuotesEditScreenState extends State<QuotesEditScreen> {
                                   color: Colors.black),
                             ),
                             IconButton(
-                                onPressed: () async{
-                                  dynamic path = await saveImage();
-                                  await ShareExtend.share(path['filePath'], "image");
+                                onPressed: () async {
+                                  File file = await saveImage();
+                                  await Share.shareXFiles([XFile(file.path)]);
+                                  // ShareExtend.share(path['filePath'], "image");
                                 },
                                 icon: const Icon(
                                   Icons.share,
@@ -294,6 +296,13 @@ class _QuotesEditScreenState extends State<QuotesEditScreen> {
     ui.Image image = await boundary.toImage();
     ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
 
-    return await ImageGallerySaver.saveImage(byteData!.buffer.asUint8List());
+    String imagepath = ("${DateTime.now().year},"
+        "${DateTime.now().month},"
+        "${DateTime.now().day},"
+        "${DateTime.now().hour},"
+        "${DateTime.now().minute},"
+        "${DateTime.now().second},");
+    return await File("/storage/emulated/0/Download/$imagepath.png")
+        .writeAsBytes(byteData!.buffer.asUint8List());
   }
 }
